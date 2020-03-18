@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -11,6 +12,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 
@@ -41,12 +43,14 @@ namespace TrashCollector.Areas.Identity.Pages.Account
 
         [BindProperty]
         public InputModel Input { get; set; }
-        public Microsoft.AspNetCore.Mvc.Rendering.SelectList Roles { get; set; }
+        public SelectList Roles { get; set; }
 
         public string ReturnUrl { get; set; }
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
+        //[NotMapped]
+        //public IEnumerable<Role> Roles { get; set; }
         public class InputModel
         {
             [Required]
@@ -66,13 +70,15 @@ namespace TrashCollector.Areas.Identity.Pages.Account
             public string ConfirmPassword { get; set; }
 
             [Required] public string Role { get; set; }
+
         }
 
         public async Task OnGetAsync(string returnUrl = null)
         {
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-            var roles = _roleManager.Roles; Roles = new Microsoft.AspNetCore.Mvc.Rendering.SelectList(roles, "Name", "Name");
+            var roles = _roleManager.Roles; 
+            Roles = new SelectList(roles, "Name", "Name");
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
