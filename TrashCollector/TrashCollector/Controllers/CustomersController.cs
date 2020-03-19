@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,7 @@ using TrashCollector.Models;
 
 namespace TrashCollector.Controllers
 {
+    [Authorize(Roles = "Customer")]
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +25,7 @@ namespace TrashCollector.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Customer.Include(c => c.PickupDay);
+            var applicationDbContext = _context.Customer.Include(c => c.IdentityUser).Include(c => c.PickupDay);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -35,6 +38,7 @@ namespace TrashCollector.Controllers
             }
 
             var customer = await _context.Customer
+                .Include(c => c.IdentityUser)
                 .Include(c => c.PickupDay)
                 .FirstOrDefaultAsync(m => m.CustomerId == id);
             if (customer == null)
@@ -48,6 +52,7 @@ namespace TrashCollector.Controllers
         // GET: Customers/Create
         public IActionResult Create()
         {
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
             ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId");
             return View();
         }
@@ -57,14 +62,17 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CustomerId,FirstName,LastName,Address,City,State,Zipcode,WeeklyPickUp")] Customer customer)
+        public async Task<IActionResult> Create([Bind("CustomerId,IdentityUserId,FirstName,LastName,Address,City,State,Zipcode,WeeklyPickUp")] Customer customer)
         {
             if (ModelState.IsValid)
             {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier); 
+                customer.IdentityUserId = userId;
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId", customer.WeeklyPickUp);
             return View(customer);
         }
@@ -82,6 +90,7 @@ namespace TrashCollector.Controllers
             {
                 return NotFound();
             }
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId", customer.WeeklyPickUp);
             return View(customer);
         }
@@ -91,7 +100,7 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,FirstName,LastName,Address,City,State,Zipcode,WeeklyPickUp")] Customer customer)
+        public async Task<IActionResult> Edit(int id, [Bind("CustomerId,IdentityUserId,FirstName,LastName,Address,City,State,Zipcode,WeeklyPickUp")] Customer customer)
         {
             if (id != customer.CustomerId)
             {
@@ -118,6 +127,7 @@ namespace TrashCollector.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId", customer.WeeklyPickUp);
             return View(customer);
         }
@@ -131,6 +141,7 @@ namespace TrashCollector.Controllers
             }
 
             var customer = await _context.Customer
+                .Include(c => c.IdentityUser)
                 .Include(c => c.PickupDay)
                 .FirstOrDefaultAsync(m => m.CustomerId == id);
             if (customer == null)

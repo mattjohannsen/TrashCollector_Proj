@@ -14,6 +14,9 @@ namespace TrashCollector.Models
     {
         public int CustomerId { get; set; }
         [Display(Name = "First Name")]
+        [ForeignKey("IdentityUser")]
+        public string IdentityUserId { get; set; }
+        public IdentityUser IdentityUser { get; set; }
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
