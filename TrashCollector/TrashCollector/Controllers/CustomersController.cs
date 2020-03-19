@@ -113,6 +113,8 @@ namespace TrashCollector.Controllers
             {
                 try
                 {
+                    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    customer.IdentityUserId = userId;
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
