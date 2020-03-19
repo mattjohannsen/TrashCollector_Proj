@@ -83,6 +83,8 @@ namespace TrashCollector.Areas.Identity.Pages.Account
         {
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            var roles = _roleManager.Roles;
+            Roles = new SelectList(roles, "Name", "Name");
             if (ModelState.IsValid)
             {
                 var user = new IdentityUser { UserName = Input.Email, Email = Input.Email };
