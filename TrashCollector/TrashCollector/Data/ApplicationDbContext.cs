@@ -20,6 +20,11 @@ namespace TrashCollector.Data
 
             builder.Entity<IdentityRole>()
                 .HasData(
+                    new IdentityRole
+                    {
+                        Name = "Admin",
+                        NormalizedName = "ADMIN",
+                    },
                     new IdentityRole 
                     { 
                         Name = "Employee", 
@@ -34,5 +39,6 @@ namespace TrashCollector.Data
                 );
         }
         public DbSet<TrashCollector.Models.Customer> Customer { get; set; }
+        public DbSet<TrashCollector.Models.PickupDay> PickupDays { get; set; }
     }
 }

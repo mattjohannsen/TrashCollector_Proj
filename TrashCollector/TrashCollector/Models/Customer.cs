@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using CsvHelper.Configuration.Attributes;
+using DocumentFormat.OpenXml.Wordprocessing;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,10 +19,11 @@ namespace TrashCollector.Models
         public string City { get; set; }
         public string State { get; set; }
         public string Zipcode { get; set; }
-        public string WeeklyPickUp { get; set; }
 
-        [ForeignKey("IdentityUser")]
-        public string IdentityUserId { get; set; }
-        public IdentityUser IdentityUser { get; set; }
+        //This is where I want to start tomorrow
+        [ForeignKey("PickupDay")]
+        [Display (Name = "Pickup Day")]
+        public int WeeklyPickUp { get; set; }
+        public string PickupDayId { get; set; }
     }
 }

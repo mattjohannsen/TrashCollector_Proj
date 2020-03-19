@@ -49,8 +49,6 @@ namespace TrashCollector.Areas.Identity.Pages.Account
 
         public IList<AuthenticationScheme> ExternalLogins { get; set; }
 
-        //[NotMapped]
-        //public IEnumerable<Role> Roles { get; set; }
         public class InputModel
         {
             [Required]
