@@ -26,8 +26,8 @@ namespace TrashCollector.Models
         //This is where I want to start tomorrow
         [ForeignKey("PickupDay")]
         [Display (Name = "Pickup Day")]
-        public int WeeklyPickUp { get; set; }
-        public string PickupDayId { get; set; }
+        public int WeeklyPickUp { get; set; } //Customer field
+        public PickupDay PickupDay { get; set; } //PickupDay field
         [NotMapped]
         public IEnumerable<PickupDay> PickupDays { get; set; }
     }
