@@ -70,11 +70,13 @@ namespace TrashCollector.Controllers
                 customer.IdentityUserId = userId;
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("Details", new { id = customer.CustomerId });
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId", customer.WeeklyPickUp);
-            return View(customer);
+            //return View(customer);
+            return RedirectToAction("Details", new { id = customer.CustomerId });
         }
 
         // GET: Customers/Edit/5
