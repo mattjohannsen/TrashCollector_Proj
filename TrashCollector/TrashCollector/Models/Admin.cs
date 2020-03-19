@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace TrashCollector.Models
 {
-    public class Employee
+    public class Admin
     {
-        public int EmployeeId { get; set; }
+        public int AdminId { get; set; }
         [ForeignKey("IdentityUser")]
         public string IdentityUserId { get; set; }
         public IdentityUser IdentityUser { get; set; }
