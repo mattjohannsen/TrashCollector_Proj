@@ -13,11 +13,14 @@ namespace TrashCollector.Models
     public class Customer
     {
         public int CustomerId { get; set; }
+        [Display(Name = "First Name")]
         public string FirstName { get; set; }
+        [Display(Name = "Last Name")]
         public string LastName { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string State { get; set; }
+        [Display(Name = "Zip Code")]
         public string Zipcode { get; set; }
 
         //This is where I want to start tomorrow
@@ -25,5 +28,7 @@ namespace TrashCollector.Models
         [Display (Name = "Pickup Day")]
         public int WeeklyPickUp { get; set; }
         public string PickupDayId { get; set; }
+        [NotMapped]
+        public IEnumerable<PickupDay> PickupDays { get; set; }
     }
 }
