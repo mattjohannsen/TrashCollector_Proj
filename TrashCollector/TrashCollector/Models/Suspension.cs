@@ -12,8 +12,8 @@ namespace TrashCollector.Models
         [ForeignKey("Customer")]
         public int CustomerId { get; set; }
         public Customer Customer { get; set; }
-        public DateTime StartSuspension { get; set; }
-        public DateTime EndSuspension { get; set; }
+        public DateTime? StartSuspension { get; set; }
+        public DateTime? EndSuspension { get; set; }
 
     }
 }
