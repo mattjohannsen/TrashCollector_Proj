@@ -26,7 +26,6 @@ namespace TrashCollector.Models
         [Display(Name = "Zip Code")]
         public string Zipcode { get; set; }
 
-        //This is where I want to start tomorrow
         [ForeignKey("PickupDay")]
         [Display (Name = "Pickup Day")]
         public int WeeklyPickUp { get; set; } //Customer field

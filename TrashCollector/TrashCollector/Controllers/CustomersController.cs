@@ -25,6 +25,7 @@ namespace TrashCollector.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             var applicationDbContext = _context.Customer.Include(c => c.IdentityUser).Include(c => c.PickupDay);
             return View(await applicationDbContext.ToListAsync());
         }
