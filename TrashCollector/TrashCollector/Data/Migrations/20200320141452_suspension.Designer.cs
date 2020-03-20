@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrashCollector.Data;
 
 namespace TrashCollector.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200320141452_suspension")]
+    partial class suspension
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,22 +50,22 @@ namespace TrashCollector.Data.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "de386688-08c2-400e-a6c6-21b71f35d635",
-                            ConcurrencyStamp = "ce05c17d-76cd-4d19-b35f-52635b79531f",
+                            Id = "81a8ddcd-af67-4478-82b4-209f3d32f1cb",
+                            ConcurrencyStamp = "eecfb5a3-4c91-4986-b638-efda82b7f6c7",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "5e22a080-4cdd-4142-ab5e-4566583284f9",
-                            ConcurrencyStamp = "47a95011-e04c-46b5-ad4c-742f13fa18ae",
+                            Id = "ba480be5-f7b0-4112-ba7a-dc6d385f0d9e",
+                            ConcurrencyStamp = "2dfb90d1-4a5b-431a-8925-795e395ccea9",
                             Name = "Employee",
                             NormalizedName = "EMPLOYEE"
                         },
                         new
                         {
-                            Id = "fd9583cf-7acb-4b90-9235-1c4494a1afb2",
-                            ConcurrencyStamp = "84624039-7508-412a-850a-9dec7907b9a1",
+                            Id = "541ee871-9a2c-4186-887a-1ffed1499e18",
+                            ConcurrencyStamp = "cec9c1fa-d844-4559-a9dc-9cf5a1ece02c",
                             Name = "Customer",
                             NormalizedName = "CUSTOMER"
                         });
@@ -339,29 +341,6 @@ namespace TrashCollector.Data.Migrations
                     b.ToTable("PickupDays");
                 });
 
-            modelBuilder.Entity("TrashCollector.Models.Suspension", b =>
-                {
-                    b.Property<int>("SuspensionId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("EndSuspension")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("StartSuspension")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("SuspensionId");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Suspension");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -438,15 +417,6 @@ namespace TrashCollector.Data.Migrations
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", "IdentityUser")
                         .WithMany()
                         .HasForeignKey("IdentityUserId");
-                });
-
-            modelBuilder.Entity("TrashCollector.Models.Suspension", b =>
-                {
-                    b.HasOne("TrashCollector.Models.Customer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -11,24 +10,23 @@ using TrashCollector.Models;
 
 namespace TrashCollector.Controllers
 {
-    [Authorize(Roles = "Admin")]
-    public class PickupDaysController : Controller
+    public class SuspensionsController : Controller
     {
         private readonly ApplicationDbContext _context;
 
-        public PickupDaysController(ApplicationDbContext context)
+        public SuspensionsController(ApplicationDbContext context)
         {
             _context = context;
         }
 
-        // GET: PickupDays
+        // GET: Suspensions
         public async Task<IActionResult> Index()
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            return View(await _context.PickupDays.ToListAsync());
+            var applicationDbContext = _context.Suspension.Include(s => s.Customer);
+            return View(await applicationDbContext.ToListAsync());
         }
 
-        // GET: PickupDays/Details/5
+        // GET: Suspensions/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -36,39 +34,42 @@ namespace TrashCollector.Controllers
                 return NotFound();
             }
 
-            var pickupDay = await _context.PickupDays
-                .FirstOrDefaultAsync(m => m.PickupDayId == id);
-            if (pickupDay == null)
+            var suspension = await _context.Suspension
+                .Include(s => s.Customer)
+                .FirstOrDefaultAsync(m => m.SuspensionId == id);
+            if (suspension == null)
             {
                 return NotFound();
             }
 
-            return View(pickupDay);
+            return View(suspension);
         }
 
-        // GET: PickupDays/Create
+        // GET: Suspensions/Create
         public IActionResult Create()
         {
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "CustomerId", "CustomerId");
             return View();
         }
 
-        // POST: PickupDays/Create
+        // POST: Suspensions/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PickupDayId,DayName")] PickupDay pickupDay)
+        public async Task<IActionResult> Create([Bind("SuspensionId,CustomerId,StartSuspension,EndSuspension")] Suspension suspension)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(pickupDay);
+                _context.Add(suspension);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(pickupDay);
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "CustomerId", "CustomerId", suspension.CustomerId);
+            return View(suspension);
         }
 
-        // GET: PickupDays/Edit/5
+        // GET: Suspensions/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -76,22 +77,23 @@ namespace TrashCollector.Controllers
                 return NotFound();
             }
 
-            var pickupDay = await _context.PickupDays.FindAsync(id);
-            if (pickupDay == null)
+            var suspension = await _context.Suspension.FindAsync(id);
+            if (suspension == null)
             {
                 return NotFound();
             }
-            return View(pickupDay);
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "CustomerId", "CustomerId", suspension.CustomerId);
+            return View(suspension);
         }
 
-        // POST: PickupDays/Edit/5
+        // POST: Suspensions/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PickupDayId,DayName")] PickupDay pickupDay)
+        public async Task<IActionResult> Edit(int id, [Bind("SuspensionId,CustomerId,StartSuspension,EndSuspension")] Suspension suspension)
         {
-            if (id != pickupDay.PickupDayId)
+            if (id != suspension.SuspensionId)
             {
                 return NotFound();
             }
@@ -100,12 +102,12 @@ namespace TrashCollector.Controllers
             {
                 try
                 {
-                    _context.Update(pickupDay);
+                    _context.Update(suspension);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!PickupDayExists(pickupDay.PickupDayId))
+                    if (!SuspensionExists(suspension.SuspensionId))
                     {
                         return NotFound();
                     }
@@ -116,10 +118,11 @@ namespace TrashCollector.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(pickupDay);
+            ViewData["CustomerId"] = new SelectList(_context.Customer, "CustomerId", "CustomerId", suspension.CustomerId);
+            return View(suspension);
         }
 
-        // GET: PickupDays/Delete/5
+        // GET: Suspensions/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -127,30 +130,31 @@ namespace TrashCollector.Controllers
                 return NotFound();
             }
 
-            var pickupDay = await _context.PickupDays
-                .FirstOrDefaultAsync(m => m.PickupDayId == id);
-            if (pickupDay == null)
+            var suspension = await _context.Suspension
+                .Include(s => s.Customer)
+                .FirstOrDefaultAsync(m => m.SuspensionId == id);
+            if (suspension == null)
             {
                 return NotFound();
             }
 
-            return View(pickupDay);
+            return View(suspension);
         }
 
-        // POST: PickupDays/Delete/5
+        // POST: Suspensions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var pickupDay = await _context.PickupDays.FindAsync(id);
-            _context.PickupDays.Remove(pickupDay);
+            var suspension = await _context.Suspension.FindAsync(id);
+            _context.Suspension.Remove(suspension);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool PickupDayExists(int id)
+        private bool SuspensionExists(int id)
         {
-            return _context.PickupDays.Any(e => e.PickupDayId == id);
+            return _context.Suspension.Any(e => e.SuspensionId == id);
         }
     }
 }
