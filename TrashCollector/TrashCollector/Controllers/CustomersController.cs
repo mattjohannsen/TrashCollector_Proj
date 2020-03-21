@@ -12,7 +12,7 @@ using TrashCollector.Models;
 
 namespace TrashCollector.Controllers
 {
-    [Authorize(Roles = "Customer")]
+    //[Authorize(Roles = "Customer")]
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -26,7 +26,7 @@ namespace TrashCollector.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var applicationDbContext = _context.Customer.Include(c => c.IdentityUser).Include(c => c.PickupDay);
+			var applicationDbContext = _context.Customer.Include(c => c.IdentityUser).Include(c => c.PickupDay);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -79,6 +79,7 @@ namespace TrashCollector.Controllers
             //return View(customer);
             return RedirectToAction("Index", new { id = customer.CustomerId });
         }
+
 
         // GET: Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)

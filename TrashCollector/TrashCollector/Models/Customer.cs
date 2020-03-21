@@ -32,5 +32,8 @@ namespace TrashCollector.Models
         public PickupDay PickupDay { get; set; } //PickupDay field
         [NotMapped]
         public IEnumerable<PickupDay> PickupDays { get; set; }
+        public DateTime? StartHold { get; set; }
+        public DateTime? EndHold { get; set; }
+
     }
 }

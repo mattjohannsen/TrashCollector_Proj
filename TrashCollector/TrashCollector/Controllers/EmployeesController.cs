@@ -34,6 +34,7 @@ namespace TrashCollector.Controllers
             else
             {
                 var applicationDbContext = _context.Employee.Include(e => e.IdentityUser);
+                //query customers in customer db based on employee zip code
                 return View(await applicationDbContext.ToListAsync());
             }
 

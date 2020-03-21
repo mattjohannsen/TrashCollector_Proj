@@ -29,6 +29,10 @@ namespace TrashCollector.ActionFilters
                 { 
                     context.Result = new RedirectToActionResult("Index", "Employees", null); 
                 }
+                else if (_claimsPrincipal.IsInRole("Admin"))
+                {
+                    context.Result = new RedirectToActionResult("Index", "Admins", null);
+                }
             }
         }
 
