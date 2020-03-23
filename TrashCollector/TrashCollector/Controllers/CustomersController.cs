@@ -78,8 +78,8 @@ namespace TrashCollector.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.IdentityUserId = userId;
-                decimal initialBalance = 0;
-                customer.Balance = initialBalance;
+                //decimal initialBalance = 0;
+                customer.Balance = 0;
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
