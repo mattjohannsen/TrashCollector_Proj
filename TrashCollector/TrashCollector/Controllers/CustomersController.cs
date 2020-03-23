@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -63,14 +64,29 @@ namespace TrashCollector.Controllers
         {
             if (ModelState.IsValid)
             {
+                var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                customer.IdentityUserId = userId;
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                //return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", new { id = customer.CustomerId });
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId", customer.WeeklyPickUp);
-            return View(customer);
+            //return View(customer);
+            return RedirectToAction("Index", new { id = customer.CustomerId });
         }
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        _context.Add(customer);
+        //        await _context.SaveChangesAsync();
+        //        return RedirectToAction(nameof(Index));
+        //    }
+        //    ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
+        //    ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId", customer.WeeklyPickUp);
+        //    return View(customer);
+        //}
 
         // GET: Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -80,13 +96,14 @@ namespace TrashCollector.Controllers
                 return NotFound();
             }
 
-            var customer = await _context.Customer.FindAsync(id);
+            Customer customer = await _context.Customer.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
             }
-            ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
-            ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId", customer.WeeklyPickUp);
+            //ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
+            //ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId", customer.WeeklyPickUp);
+            customer.PickupDays = _context.PickupDays;
             return View(customer);
         }
 
