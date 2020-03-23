@@ -51,7 +51,7 @@ namespace TrashCollector.Controllers
         public IActionResult Create()
         {
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId");
+            ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "DayName");
             return View();
         }
 
@@ -66,6 +66,8 @@ namespace TrashCollector.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.IdentityUserId = userId;
+                decimal initialBalance = 0;
+                customer.Balance = initialBalance;
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
                 //return RedirectToAction(nameof(Index));
@@ -123,6 +125,8 @@ namespace TrashCollector.Controllers
             {
                 try
                 {
+                    var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+                    customer.IdentityUserId = userId;
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
