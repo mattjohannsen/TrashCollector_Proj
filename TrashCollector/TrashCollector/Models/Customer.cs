@@ -36,7 +36,13 @@ namespace TrashCollector.Models
         [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
         [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? StartHold { get; set; }
+        [Display(Name = "Suspend Pickup End Date")]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? EndHold { get; set; }
+        [Display(Name = "Extra Pickup Date")]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? ExtraPickupDay { get; set; }
         [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
         [Column(TypeName = "money")]
