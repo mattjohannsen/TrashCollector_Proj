@@ -32,6 +32,9 @@ namespace TrashCollector.Models
         public PickupDay PickupDay { get; set; } //PickupDay field
         [NotMapped]
         public IEnumerable<PickupDay> PickupDays { get; set; }
+        [Display(Name = "Suspend Pickup Start Date")]
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:d}")]
         public DateTime? StartHold { get; set; }
         public DateTime? EndHold { get; set; }
         public DateTime? ExtraPickupDay { get; set; }

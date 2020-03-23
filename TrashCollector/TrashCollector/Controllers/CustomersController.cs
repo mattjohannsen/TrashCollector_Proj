@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -127,6 +128,11 @@ namespace TrashCollector.Controllers
                 {
                     var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                     customer.IdentityUserId = userId;
+                    CultureInfo MyCultureInfo = new CultureInfo("en-US");
+                    customer.StartHold = DateTime.Parse(Request.Form["StartHold"]);
+                    //customer.StartHold = DateTime.ParseExact(Request.Form["StartHold"], "d", MyCultureInfo);
+                    //customer.EndHold = DateTime.Parse(Request.Form["EndHold"]);
+                    //customer.ExtraPickupDay = DateTime.Parse(Request.Form["ExtraPickupDay"]);
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
