@@ -24,8 +24,19 @@ namespace TrashCollector.Controllers
         // GET: Customers
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Customer.Include(c => c.IdentityUser).Include(c => c.PickupDay);
-            return View(await applicationDbContext.ToListAsync());
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            //var applicationDbContext = _context.Customer.Include(c => c.IdentityUser).Include(c => c.PickupDay);
+            //return View(await applicationDbContext.ToListAsync());
+            Customer customer = _context.Customer.Where(c => c.IdentityUserId == userId).FirstOrDefault();
+            if (customer == null)
+            {
+                throw new NullReferenceException();
+            }
+            else
+            {
+                return View(customer);
+                //return RedirectToAction("Index", customer);
+            }
         }
 
         // GET: Customers/Details/5
