@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -12,7 +11,6 @@ using TrashCollector.Models;
 
 namespace TrashCollector.Controllers
 {
-    [Authorize(Roles = "Employee")]
     public class EmployeesController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -25,19 +23,8 @@ namespace TrashCollector.Controllers
         // GET: Employees
         public async Task<IActionResult> Index()
         {
-            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var employee = _context.Employee.Where(e => e.IdentityUserId == userId).SingleOrDefault();
-            if(employee == null)
-            {
-                return RedirectToAction("Create");
-            }
-            else
-            {
-                var applicationDbContext = _context.Employee.Include(e => e.IdentityUser);
-                //query customers in customer db based on employee zip code
-                return View(await applicationDbContext.ToListAsync());
-            }
-
+            var applicationDbContext = _context.Employee.Include(e => e.IdentityUser);
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Employees/Details/5
@@ -71,7 +58,7 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("EmployeeId,IdentityUserId,FirstName,LastName")] Employee employee)
+        public async Task<IActionResult> Create([Bind("EmployeeId,IdentityUserId,FirstName,LastName,RouteZipcode")] Employee employee)
         {
             if (ModelState.IsValid)
             {
@@ -107,7 +94,7 @@ namespace TrashCollector.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,IdentityUserId,FirstName,LastName")] Employee employee)
+        public async Task<IActionResult> Edit(int id, [Bind("EmployeeId,IdentityUserId,FirstName,LastName,RouteZipcode")] Employee employee)
         {
             if (id != employee.EmployeeId)
             {
