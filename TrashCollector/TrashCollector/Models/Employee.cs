@@ -20,5 +20,7 @@ namespace TrashCollector.Models
         public string LastName { get; set; }
         [Display(Name = "Employee Route Zipcode")]
         public string RouteZipcode { get; set; }
+        [NotMapped]
+        public IEnumerable<Customer> RoutePickUps { get; set; }
     }
 }
