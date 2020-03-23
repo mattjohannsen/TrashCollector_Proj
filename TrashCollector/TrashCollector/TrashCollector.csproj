@@ -5,6 +5,11 @@
     <UserSecretsId>aspnet-TrashCollector-8F22EE14-2ADB-46F1-86CD-1061CFE7237E</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Remove="Data\Migrations\20200323002506_addbalance.cs" />
+    <Compile Remove="Data\Migrations\20200323002506_addbalance.Designer.cs" />
+  </ItemGroup>
+
 
   <ItemGroup>
     <PackageReference Include="CsvHelper" Version="15.0.1" />

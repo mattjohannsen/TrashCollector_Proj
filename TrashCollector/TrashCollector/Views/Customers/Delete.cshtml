@@ -60,6 +60,30 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.PickupDay.PickupDayId)
         </dd class>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.StartHold)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.StartHold)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EndHold)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EndHold)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.ExtraPickupDay)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.ExtraPickupDay)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Balance)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Balance)
+        </dd>
     </dl>
     
     <form asp-action="Delete">

@@ -34,6 +34,10 @@ namespace TrashCollector.Models
         public IEnumerable<PickupDay> PickupDays { get; set; }
         public DateTime? StartHold { get; set; }
         public DateTime? EndHold { get; set; }
+        public DateTime? ExtraPickupDay { get; set; }
+        [DataType(System.ComponentModel.DataAnnotations.DataType.Currency)]
+        [Column(TypeName = "money")]
+        public decimal Balance { get; set; }
 
     }
 }
