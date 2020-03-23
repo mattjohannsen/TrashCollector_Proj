@@ -25,8 +25,19 @@ namespace TrashCollector.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Employee currentemployee = _context.Employee.Where(e => e.IdentityUserId == userId).FirstOrDefault();
+            string todaysDayOfWeek = DateTime.Now.DayOfWeek.ToString();
+            var pickupDay = _context.PickupDays.Where(d => d.DayName.ToString() == todaysDayOfWeek);
+
+            //PickupDay ourpickupDay = new PickupDay();
+
             //var applicationDbContext = _context.Employee.Include(e => e.IdentityUser);
-            var routelist = _context.Customer.Where(c => c.Zipcode == currentemployee.RouteZipcode);
+
+            var routelist = _context.Customer.Where(c => c.Zipcode == currentemployee.RouteZipcode && c.PickupDay.DayName == todaysDayOfWeek).ToList();
+            //routelist = _context.Customer.Where(c => c.PickupDay.DayName == "Monday");
+            //routelist = routelist.Where(c => c.PickupDay == pickupDay);
+            //int dayIntValue = _context.PickupDays.Where(d => ToString(d.DayName) == DateTime.Now.DayOfWeek.ToString().FirstOrDefault());
+            //var routelist = _context.Customer.Where(c => c.PickupDay == DateTime.Now.DayOfWeek.ToString());
+            //Find all customers who have null start days
             currentemployee.RoutePickUps = routelist;
             //return View(await applicationDbContext.ToListAsync());
             return View(currentemployee);
