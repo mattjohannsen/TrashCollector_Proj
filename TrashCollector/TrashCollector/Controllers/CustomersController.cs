@@ -140,7 +140,31 @@ namespace TrashCollector.Controllers
                     var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                     customer.IdentityUserId = userId;
                     CultureInfo MyCultureInfo = new CultureInfo("en-US");
-                    customer.StartHold = DateTime.Parse(Request.Form["StartHold"]);
+                    var whatthedate = Request.Form["StartHold"];
+                    if (Request.Form["StartHold"] == "")
+                    {
+                        customer.StartHold = null;
+                    }
+                    else
+                    {
+                        customer.StartHold = DateTime.Parse(Request.Form["StartHold"]);
+                    }
+                    if (Request.Form["EndHold"] == "")
+                    {
+                        customer.EndHold = null;
+                    }
+                    else
+                    {
+                        customer.EndHold = DateTime.Parse(Request.Form["EndHold"]);
+                    }
+                    if (Request.Form["ExtraPickupDay"] == "")
+                    {
+                        customer.ExtraPickupDay = null;
+                    }
+                    else
+                    {
+                        customer.ExtraPickupDay = DateTime.Parse(Request.Form["ExtraPickupDay"]);
+                    }
                     //customer.StartHold = DateTime.ParseExact(Request.Form["StartHold"], "d", MyCultureInfo);
                     //customer.EndHold = DateTime.Parse(Request.Form["EndHold"]);
                     //customer.ExtraPickupDay = DateTime.Parse(Request.Form["ExtraPickupDay"]);
