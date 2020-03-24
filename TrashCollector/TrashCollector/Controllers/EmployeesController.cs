@@ -73,13 +73,18 @@ namespace TrashCollector.Controllers
         [HttpGet]
         public async Task<IActionResult> CustProfile(int? id)
         {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
             Customer customer = _context.Customer.Where(c => c.CustomerId == id).FirstOrDefault();
-            return RedirectToAction("CustProfile", customer);
-        }
-        [HttpPost]
-        public async Task<IActionResult> CustProfile(Customer customer)
-        {
-            return RedirectToAction("Index");
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return View(customer);
+            //return RedirectToAction("CustProfile", new { id = customer.CustomerId });
         }
 
         public IActionResult ConfirmPickup(int id)

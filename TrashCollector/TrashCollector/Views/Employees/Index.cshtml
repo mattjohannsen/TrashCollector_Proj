@@ -17,8 +17,9 @@
             <tr>
                 <td>
                     <p>
-                        @Html.DisplayFor(modelItem => item.Address) - @Html.DisplayFor(modelItem => item.Zipcode) -
-                        - @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+                        @Html.DisplayFor(modelItem => item.Address) - 
+                        @Html.DisplayFor(modelItem => item.Zipcode) -
+                        <a asp-action="CustProfile" asp-route-id="@item.CustomerId">@Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)</a>
                         @if (item.StartHold > DateTime.Now || item.EndHold < DateTime.Now)
                         {
                             @if (item.IsPickedup == false)
