@@ -5,39 +5,45 @@
     Layout = "~/Views/Shared/_LayoutEmployee.cshtml";
 }
 
-<h1>Routes</h1>
+<h1>@DateTime.Now.DayOfWeek.ToString()'s Route</h1>
 
 <div>
-    <h4>Employee Routes</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.IdentityUser)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IdentityUser.Id)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.RouteZipcode)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.RouteZipcode)
-        </dd>
-    </dl>
+    <h4>For: @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName): @Html.DisplayFor(model => model.RouteZipcode)</h4>
 </div>
+<tbody>
+    <tr>
+        <td>
+            <div class="form-group">
+                <form action="/Employees/Routes">
+                    <label for="dayToRoute">See Route for:</label>
+                    <select id="dayToRoute" name="dayToRoute">
+                        <option value="" disabled>select a day --></option>
+                        <option value="Monday">Monday</option>
+                        <option value="Tuesday">Tuesday</option>
+                        <option value="Wednesday">Wednesday</option>
+                        <option value="Thursday">Thursday</option>
+                        <option value="Friday">Friday</option>
+                        <option value="Saturday">Saturday</option>
+                        <option value="Sunday">Sunday</option>
+                    </select>
+                    <input type="submit" value="See Route">
+                </form>
+            </div>
+        </td>
+    </tr>
+    @foreach (var item in Model.RoutePickUps)
+    {
+        <tr>
+            <td>
+                <p>
+                    @Html.DisplayFor(modelItem => item.Address) - @Html.DisplayFor(modelItem => item.Zipcode) -
+                    - @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName) @DateTime.Now.ToShortDateString() - @Html.DisplayFor(modelItem => item.StartHold) - @Html.DisplayFor(modelItem => item.EndHold))
+                </p>
+            </td>
+        </tr>
+    }
+</tbody>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.EmployeeId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.EmployeeId">Edit Employee</a> |
+    <a asp-action="Index">Back to Today's Route</a>
 </div>

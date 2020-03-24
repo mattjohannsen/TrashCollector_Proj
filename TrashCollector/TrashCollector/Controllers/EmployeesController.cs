@@ -193,22 +193,32 @@ namespace TrashCollector.Controllers
             return _context.Employee.Any(e => e.EmployeeId == id);
         }
 
-        //GET
-        // GET: Employees/Routes
-        public async Task<IActionResult> Routes(int? id)
+        // GET: Employees
+        [HttpGet]
+        public async Task<IActionResult> Routes(string dayToRoute = null)
         {
-            if (id == null)
+            var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
+            Employee currentemployee = _context.Employee.Where(e => e.IdentityUserId == userId).FirstOrDefault();
+            string dayToCheck = DateTime.Now.DayOfWeek.ToString();
+            if (dayToRoute != null)
             {
-                return NotFound();
+                dayToCheck = dayToRoute;
             }
+            //var pickupDay = _context.PickupDays.Where(d => d.DayName.ToString() == dayToCheck);
 
-            var employee = await _context.Employee
-                .Include(e => e.IdentityUser)
-                .FirstOrDefaultAsync(m => m.EmployeeId == id);
-            if (employee == null)
-            {
-                return NotFound();
-            }
+            //PickupDay ourpickupDay = new PickupDay();
+
+            //var applicationDbContext = _context.Employee.Include(e => e.IdentityUser);
+
+            var routelist = _context.Customer.Where(c => c.Zipcode == currentemployee.RouteZipcode && c.PickupDay.DayName == dayToCheck).ToList();
+            //routelist = _context.Customer.Where(c => c.PickupDay.DayName == "Monday");
+            //routelist = routelist.Where(c => c.PickupDay == pickupDay);
+            //int dayIntValue = _context.PickupDays.Where(d => ToString(d.DayName) == DateTime.Now.DayOfWeek.ToString().FirstOrDefault());
+            //var routelist = _context.Customer.Where(c => c.PickupDay == DateTime.Now.DayOfWeek.ToString());
+            //Find all customers who have null start days
+            currentemployee.RoutePickUps = routelist;
+            //return View(await applicationDbContext.ToListAsync());
+
             var routesByDay = new List<DayOfWeek>();
             routesByDay.Add(DayOfWeek.Monday);
             routesByDay.Add(DayOfWeek.Tuesday);
@@ -217,10 +227,9 @@ namespace TrashCollector.Controllers
             routesByDay.Add(DayOfWeek.Friday);
             routesByDay.Add(DayOfWeek.Saturday);
             routesByDay.Add(DayOfWeek.Sunday);
-            employee.workDays = routesByDay;
-            return View(employee);
-        }
+            currentemployee.workDays = routesByDay;
 
-        //POST
+            return View(currentemployee);
+        }
     }
 }
