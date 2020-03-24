@@ -24,6 +24,8 @@ namespace TrashCollector.Models
         public IEnumerable<Customer> RoutePickUps { get; set; }
         [NotMapped]
         public List<DayOfWeek> workDays = new List<DayOfWeek>();
+        [NotMapped]
+        public string DayToRoute { get; set; }
 
     }
 }

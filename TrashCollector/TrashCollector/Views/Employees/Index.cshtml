@@ -11,26 +11,6 @@
     <h4>For: @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName): @Html.DisplayFor(model => model.RouteZipcode)</h4>
 </div>
 <tbody>
-    <tr>
-        <td>
-            <div class="form-group">
-                <form action="/Employees/Index">
-                    <label for="dayToRoute">See Route for:</label>
-                    <select id="dayToRoute" name="dayToRoute">
-                        <option value="" disabled>select a day --></option>
-                        <option value="Monday">Monday</option>
-                        <option value="Tuesday">Tuesday</option>
-                        <option value="Wednesday">Wednesday</option>
-                        <option value="Thursday">Thursday</option>
-                        <option value="Friday">Friday</option>
-                        <option value="Saturday">Saturday</option>
-                        <option value="Sunday">Sunday</option>
-                    </select>
-                    <input type="submit" value="See Route">
-                </form>
-            </div>
-        </td>
-    </tr>
     @foreach (var item in Model.RoutePickUps)
     {
     <tr>

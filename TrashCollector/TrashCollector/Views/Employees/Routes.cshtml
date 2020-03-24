@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_LayoutEmployee.cshtml";
 }
 
-<h1>@DateTime.Now.DayOfWeek.ToString()'s Route</h1>
+    <h1>@Html.DisplayFor(model => model.DayToRoute)'s Route</h1>
 
 <div>
     <h4>For: @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName): @Html.DisplayFor(model => model.RouteZipcode)</h4>
