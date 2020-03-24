@@ -11,17 +11,37 @@
     <h4>For: @Html.DisplayFor(model => model.FirstName) @Html.DisplayFor(model => model.LastName): @Html.DisplayFor(model => model.RouteZipcode)</h4>
 </div>
 <tbody>
-    @foreach (var item in Model.RoutePickUps)
-    {
-    <tr>
-        <td>
-            <p>
-                @Html.DisplayFor(modelItem => item.Address) - @Html.DisplayFor(modelItem => item.Zipcode) -
-                - @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName) @DateTime.Now.ToShortDateString() - @Html.DisplayFor(modelItem => item.StartHold) - @Html.DisplayFor(modelItem => item.EndHold))
-            </p>
-        </td>
-    </tr>
-    }
+
+        @foreach (var item in Model.RoutePickUps)
+        {
+            <tr>
+                <td>
+                    <p>
+                        @Html.DisplayFor(modelItem => item.Address) - @Html.DisplayFor(modelItem => item.Zipcode) -
+                        - @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+                        @if (item.StartHold > DateTime.Now || item.EndHold < DateTime.Now)
+                        {
+                            @DateTime.Now.ToShortDateString()
+                        }
+                        else
+                        {
+                            <h5>ON HOLD: @Html.DisplayFor(modelItem => item.StartHold) - @Html.DisplayFor(modelItem => item.EndHold)</h5>
+                        }
+                    </p>
+                </td>
+                <td>
+                    @if (item.IsPickedup == false)
+                    {
+                    <a class="btn btn-primary" asp-action="ConfirmPickup" asp-route-id="@item.CustomerId">Confirm Pickup</a>
+                    }
+                    else
+                    {
+                    <button class="btn btn-primary" asp-action="ConfirmPickup" asp-route-id="@item.CustomerId" disabled>Pickup Complete</button>
+                    }
+                </td>
+            </tr>
+        }
+
 </tbody>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.EmployeeId">Edit Employee</a> |

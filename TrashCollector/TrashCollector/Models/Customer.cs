@@ -30,6 +30,7 @@ namespace TrashCollector.Models
         [Display (Name = "Pickup Day")]
         public int WeeklyPickUp { get; set; } //Customer field
         public PickupDay PickupDay { get; set; } //PickupDay field
+        public bool IsPickedup { get; set; }
         [NotMapped]
         public IEnumerable<PickupDay> PickupDays { get; set; }
         [Display(Name = "Suspend Pickup Start Date")]
