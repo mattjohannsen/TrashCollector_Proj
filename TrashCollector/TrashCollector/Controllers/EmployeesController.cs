@@ -26,18 +26,29 @@ namespace TrashCollector.Controllers
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
             Employee currentemployee = _context.Employee.Where(e => e.IdentityUserId == userId).FirstOrDefault();
+            //Customer testCustomer = _context.Customer.Where(c => c.CustomerId == 24).FirstOrDefault();
             string dayToCheck = DateTime.Now.DayOfWeek.ToString();
+            string dateToCheck = DateTime.Now.ToShortDateString();
+            DateTime? DTdateToCheck = DateTime.Parse(dateToCheck);
+            //string otherDateToCheck = testCustomer.ExtraPickupDay.ToString();
             if (dayToRoute != null)
             {
                 dayToCheck = dayToRoute;
             }
+            //DateTime parsedDateToCheck = DateTime.Parse(dayToRoute);
             //var pickupDay = _context.PickupDays.Where(d => d.DayName.ToString() == dayToCheck);
 
             //PickupDay ourpickupDay = new PickupDay();
 
             //var applicationDbContext = _context.Employee.Include(e => e.IdentityUser);
+            //var routelist = _context.Customer.Where(c => c.Zipcode == currentemployee.RouteZipcode && c.PickupDay.DayName == dayToCheck).Include(c => (c.ExtraPickupDay).ToString() == dayToCheck).ToList();
+            //This is the good one
+            //var routelist = _context.Customer.Where(c => c.Zipcode == currentemployee.RouteZipcode && c.PickupDay.DayName == dayToCheck).ToList();
+            //End of good one
+            var routelist = _context.Customer.Where(c => c.Zipcode == currentemployee.RouteZipcode && c.PickupDay.DayName == dayToCheck || c.ExtraPickupDay == DTdateToCheck).ToList();
+            //var routelist = _context.Customer.Where(c => c.ExtraPickupDay == DTdateToCheck).ToList();
 
-            var routelist = _context.Customer.Where(c => c.Zipcode == currentemployee.RouteZipcode && c.PickupDay.DayName == dayToCheck).ToList();
+            //var routelist = _context.Customer.Where(c => c.Zipcode == currentemployee.RouteZipcode && (c.ExtraPickupDay).ToString() == dayToCheck).ToList();
             //routelist = _context.Customer.Where(c => c.PickupDay.DayName == "Monday");
             //routelist = routelist.Where(c => c.PickupDay == pickupDay);
             //int dayIntValue = _context.PickupDays.Where(d => ToString(d.DayName) == DateTime.Now.DayOfWeek.ToString().FirstOrDefault());
@@ -58,6 +69,19 @@ namespace TrashCollector.Controllers
 
             return View(currentemployee);
         }
+        // GET: CustProfile
+        [HttpGet]
+        public async Task<IActionResult> CustProfile(int? id)
+        {
+            Customer customer = _context.Customer.Where(c => c.CustomerId == id).FirstOrDefault();
+            return RedirectToAction("CustProfile", customer);
+        }
+        [HttpPost]
+        public async Task<IActionResult> CustProfile(Customer customer)
+        {
+            return RedirectToAction("Index");
+        }
+
         public IActionResult ConfirmPickup(int id)
         {
             var customerDB = _context.Customer.Where(c => c.CustomerId == id).SingleOrDefault();

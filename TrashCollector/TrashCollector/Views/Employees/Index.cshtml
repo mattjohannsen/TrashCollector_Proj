@@ -21,23 +21,20 @@
                         - @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
                         @if (item.StartHold > DateTime.Now || item.EndHold < DateTime.Now)
                         {
-                            @DateTime.Now.ToShortDateString()
+                            @if (item.IsPickedup == false)
+                            {
+                                <a class="btn btn-primary" asp-action="ConfirmPickup" asp-route-id="@item.CustomerId">Confirm Pickup</a>
+                            }
+                            else
+                            {
+                                <button class="btn btn-primary" asp-action="ConfirmPickup" asp-route-id="@item.CustomerId" disabled>Pickup Complete</button>
+                            }
                         }
                         else
                         {
-                            <h5>ON HOLD: @Html.DisplayFor(modelItem => item.StartHold) - @Html.DisplayFor(modelItem => item.EndHold)</h5>
+                            <strong>ON HOLD: @Html.DisplayFor(modelItem => item.StartHold) - @Html.DisplayFor(modelItem => item.EndHold)</strong>
                         }
                     </p>
-                </td>
-                <td>
-                    @if (item.IsPickedup == false)
-                    {
-                    <a class="btn btn-primary" asp-action="ConfirmPickup" asp-route-id="@item.CustomerId">Confirm Pickup</a>
-                    }
-                    else
-                    {
-                    <button class="btn btn-primary" asp-action="ConfirmPickup" asp-route-id="@item.CustomerId" disabled>Pickup Complete</button>
-                    }
                 </td>
             </tr>
         }
