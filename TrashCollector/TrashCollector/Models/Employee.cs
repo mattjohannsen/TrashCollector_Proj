@@ -22,5 +22,8 @@ namespace TrashCollector.Models
         public string RouteZipcode { get; set; }
         [NotMapped]
         public IEnumerable<Customer> RoutePickUps { get; set; }
+        [NotMapped]
+        public List<DayOfWeek> workDays = new List<DayOfWeek>();
+
     }
 }
