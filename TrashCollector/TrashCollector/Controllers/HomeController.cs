@@ -22,8 +22,6 @@ namespace TrashCollector.Controllers
 
         public IActionResult Index()
         {
-            //var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //Add logic here to redirect customer or employee to their appropriate
             return View();
         }
 

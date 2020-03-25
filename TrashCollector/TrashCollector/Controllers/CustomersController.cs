@@ -25,8 +25,6 @@ namespace TrashCollector.Controllers
         public async Task<IActionResult> Index()
         {
             var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
-            //var applicationDbContext = _context.Customer.Include(c => c.IdentityUser).Include(c => c.PickupDay);
-            //return View(await applicationDbContext.ToListAsync());
             Customer customer = _context.Customer.Where(c => c.IdentityUserId == userId).FirstOrDefault();
             if (customer == null)
             {
@@ -35,7 +33,6 @@ namespace TrashCollector.Controllers
             else
             {
                 return View(customer);
-                //return RedirectToAction("Index", customer);
             }
         }
 
@@ -78,29 +75,15 @@ namespace TrashCollector.Controllers
             {
                 var userId = this.User.FindFirstValue(ClaimTypes.NameIdentifier);
                 customer.IdentityUserId = userId;
-                //decimal initialBalance = 0;
                 customer.Balance = 0;
                 _context.Add(customer);
                 await _context.SaveChangesAsync();
-                //return RedirectToAction(nameof(Index));
                 return RedirectToAction("Index", new { id = customer.CustomerId });
             }
             ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
             ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId", customer.WeeklyPickUp);
-            //return View(customer);
             return RedirectToAction("Index", new { id = customer.CustomerId });
         }
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        _context.Add(customer);
-        //        await _context.SaveChangesAsync();
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
-        //    ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId", customer.WeeklyPickUp);
-        //    return View(customer);
-        //}
 
         // GET: Customers/Edit/5
         public async Task<IActionResult> Edit(int? id)
@@ -115,8 +98,6 @@ namespace TrashCollector.Controllers
             {
                 return NotFound();
             }
-            //ViewData["IdentityUserId"] = new SelectList(_context.Users, "Id", "Id", customer.IdentityUserId);
-            //ViewData["WeeklyPickUp"] = new SelectList(_context.PickupDays, "PickupDayId", "PickupDayId", customer.WeeklyPickUp);
             customer.PickupDays = _context.PickupDays;
             return View(customer);
         }
@@ -165,9 +146,6 @@ namespace TrashCollector.Controllers
                     {
                         customer.ExtraPickupDay = DateTime.Parse(Request.Form["ExtraPickupDay"]);
                     }
-                    //customer.StartHold = DateTime.ParseExact(Request.Form["StartHold"], "d", MyCultureInfo);
-                    //customer.EndHold = DateTime.Parse(Request.Form["EndHold"]);
-                    //customer.ExtraPickupDay = DateTime.Parse(Request.Form["ExtraPickupDay"]);
                     _context.Update(customer);
                     await _context.SaveChangesAsync();
                 }
