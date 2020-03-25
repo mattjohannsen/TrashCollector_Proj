@@ -86,7 +86,33 @@ namespace TrashCollector.Controllers
             return View(customer);
             //return RedirectToAction("CustProfile", new { id = customer.CustomerId });
         }
+        // GET: CustMap
+        [HttpGet]
+        public async Task<IActionResult> CustMap(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
 
+            Customer customer = _context.Customer.Where(c => c.CustomerId == id).FirstOrDefault();
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return View(customer);
+            //return RedirectToAction("CustProfile", new { id = customer.CustomerId });
+        }
+        public string GetGoogleAddress(int id)
+        {
+            var customerDB = _context.Customer.Where(c => c.CustomerId == id).SingleOrDefault();
+            string googleAddress = "";
+            if (customerDB != null)
+            {
+                googleAddress = customerDB.Address + " " + customerDB.Zipcode;
+            }
+            return googleAddress;
+        }
         public IActionResult ConfirmPickup(int id)
         {
             var customerDB = _context.Customer.Where(c => c.CustomerId == id).SingleOrDefault();
@@ -98,6 +124,7 @@ namespace TrashCollector.Controllers
             }
             return RedirectToAction("Index");
         }
+        
 
         // GET: Employees/Details/5
         public async Task<IActionResult> Details(int? id)
